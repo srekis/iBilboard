@@ -1,5 +1,5 @@
-import fileLogger from '../services/FileLoggerService'
-import config from '../config/app'
+import fileLogger from '../services/FileLoggerService.js'
+import config from '../config/app.js'
 import fs from 'fs'
 
 import {dataWithoutCount, dataWithCount} from './test.data.js'

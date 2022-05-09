@@ -1,4 +1,4 @@
-import redis from '../services/RedisService'
+import redis from '../services/RedisService.js'
 
 /**************************************************************************************/
 /* TESTS
