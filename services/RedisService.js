@@ -1,29 +1,30 @@
-const config = require("../config/app")
+import { createClient } from 'redis';
 
-const redis = require('redis')
+const client = createClient();
 
-//const client = createClient();
-// const client = redis.createClient({
-//     host: config.redisHost,
-//     port: config.redisPort
-// })
+client.on('connect', (err) =>{
+    if (err) console.log(err); // do something with error
+    console.log("Connected to redis");
+})
 
-// client.on("connect", function () {
-//     console.log("You are now connected");
-// });
+client.on('error', (err) => console.log('Redis Client Error', err));
 
+(async () => await client.connect())();
 
-module.exports = {
+const getCount = () => {
+    return client.get('count');
+}
 
-    getCount: () => {
-        return 10;
-    },
+const incrementCount = (value) => {
+    return client.incrBy('count', value);
+}
 
-    incrementCount: (value) => {
-        let currentCount = this.getCount();
-        let newCount = currentCount + value;
+const flushAll = () => {
+    return client.flushAll();
+}
 
-        // client.set('count', newCount, (err, reply) => {
-        // });
-    }
-};
+export default {
+    getCount,
+    incrementCount,
+    flushAll
+}

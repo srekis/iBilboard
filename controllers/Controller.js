@@ -1,25 +1,27 @@
-const fileLogger = require('../services/FileLoggerService')
-const redis = require('../services/RedisService')
+import fileLogger from '../services/FileLoggerService.js'
+import redis from'../services/RedisService.js'
 
-const trackBody = ((req, res) => {
+const trackBody = async (req, res) => {
 
-    let data = req.body;
-    let hasCount = data.hasOwnProperty('count')
+    const data = req.body;
+    const hasCount = data.hasOwnProperty('count')
 
     fileLogger.logRequestData(data);
 
     if (hasCount) {
-        redis.incrementCount(data.count);
+        await redis.incrementCount(data.count);
     }
 
-    res.end()
-})
+    res.sendStatus(200)
+}
 
-const getCount = ((req, res) => {
-    res.send(redis.getCount())
-})
+const getCount = async (req, res) => {
+    const count  = await redis.getCount();
 
-module.exports = {
+    res.send(JSON.stringify(count));
+}
+
+export default {
     trackBody,
     getCount
 }

@@ -1,9 +1,14 @@
-const express = require("express");
+import express from 'express'
+import controller from '../controllers/Controller.js'
+
 const router = express.Router();
-const {trackBody, getCount} = require('../controllers/Controller')
 
-router.post('/track', trackBody);
+router.post('/track', controller.trackBody);
 
-router.get('/count', getCount);
+router.get('/count', controller.getCount);
 
-module.exports = router;
+router.get('*', (req, res) => {
+    res.status(404).send('Not available request...')
+});
+
+export default router;

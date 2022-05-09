@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "description": "IBilboard task",
   "main": "index.js",
+  "type": "module",
+  "jest": {
+    "setupFiles": [
+      "./config/app.js"
+    ]
+  },
   "scripts": {
     "dev": "nodemon index.js",
     "test": "jest"
@@ -16,7 +22,9 @@
     "redis": "^4.1.0"
   },
   "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.17.9",
+    "jest": "^28.1.0",
     "nodemon": "^2.0.16",
-    "jest": "^28.0.3"
+    "supertest": "^6.2.3"
   }
 }

@@ -1,13 +1,15 @@
-const fs = require('fs')
-const config = require('../config/app')
+import fs from 'fs'
+import config from '../config/app.js'
 
-module.exports = {
+const  logRequestData = (body) => {
 
-    logRequestData: (body) => {
-        let data = JSON.stringify(body);
+    const data = JSON.stringify(body);
 
-        let path = config.logFilePath;
+    const path = config.logFilePath;
 
-        fs.writeFileSync(path, data + "\n", {flag: 'a+'})
-    }
-};
+    fs.writeFileSync(path, data + "\n", {flag: 'a+'})
+}
+
+export default {
+    logRequestData
+}

@@ -1,26 +1,20 @@
-const logger = require('../services/FileLoggerService')
-const config = require('../config/app')
-const fs = require('fs');
+import fileLogger from '../services/FileLoggerService'
+import config from '../config/app'
+import fs from 'fs'
 
-let requestData = {
-    firstName: 'firstName',
-    lastName: 'lastName'
-}
+import {dataWithoutCount, dataWithCount} from './test.data'
 
-let requestDataWithCount = {
-    firstName: 'firstName',
-    lastName: 'lastName',
-    count: 10
-}
-
-function setUp()
-{
+beforeEach(() => {
     if (fs.existsSync(config.logFilePath)) {
         fs.unlinkSync(config.logFilePath)
     }
+})
 
-    return this;
-}
+afterEach(() => {
+    if (fs.existsSync(config.logFilePath)) {
+        fs.unlinkSync(config.logFilePath)
+    }
+})
 
 function fetchDataFromLogFileAsJson()
 {
@@ -31,9 +25,7 @@ function fetchDataFromLogFileAsJson()
 /**************************************************************************************/
 test('check log request data into file without count', () => {
 
-    setUp();
-
-    logger.logRequestData(requestData);
+    fileLogger.logRequestData(dataWithoutCount);
 
     let jsonData = fetchDataFromLogFileAsJson();
 
@@ -44,14 +36,12 @@ test('check log request data into file without count', () => {
 
 test('check log request data into file with count', () => {
 
-    setUp();
-
-    logger.logRequestData(requestDataWithCount);
+    fileLogger.logRequestData(dataWithCount);
 
     let jsonData = fetchDataFromLogFileAsJson();
 
     expect(jsonData.firstName).toBe('firstName');
     expect(jsonData.lastName).toBe('lastName');
-    expect(jsonData.count).toBe(10);
+    expect(jsonData.count).toBe(dataWithCount.count);
 });
 
