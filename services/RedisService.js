@@ -4,7 +4,7 @@ const client = createClient();
 
 client.on('connect', (err) =>{
     if (err) console.log(err); // do something with error
-    console.log("Connected to redis");
+    //console.log("Connected to redis");
 })
 
 client.on('error', (err) => console.log('Redis Client Error', err));
