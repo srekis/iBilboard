@@ -7,6 +7,8 @@ test('test increment and get count', async () => {
 
     await redis.flushAll();
 
+    expect(await redis.getCount()).toBe(null);
+
     // first call should be null
     let count = await redis.getCount();
     expect(count).toBe(null);

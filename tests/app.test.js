@@ -24,13 +24,18 @@ test("should response with 200, save data to file and increment count in redis",
 
     await redis.flushAll();
 
-    const response = await request(app).post('/track').send(dataWithCount);
-    expect(response.statusCode).toBe(200);
+    const postResponse = await request(app).post('/track').send(dataWithCount);
+    expect(postResponse.statusCode).toBe(200);
 
     // should create a file, content is tested in FileLoggerService.test.js
     const fileExists = fs.existsSync(config.logFilePath)
-    expect(fileExists).toBe(true);
+    expect(fileExists).toBe(true)
 
-    const count = await redis.getCount();
-    expect(count).toBe(dataWithCount.count);
+    const getResponse = await request(app).get('/count')
+
+    expect(getResponse.status).toEqual(200)
+    expect(getResponse.type).toEqual(expect.stringContaining('json'))
+
+    // TODO: in body should be JSON object {count:10} but sometimes it is empty (some error in redis service occurs) no idea...
+    expect(getResponse.body.count).toEqual(dataWithCount.count)
 })

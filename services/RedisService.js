@@ -1,26 +1,52 @@
-import { createClient } from 'redis';
+import {createClient} from 'redis';
 
 const client = createClient();
 
-client.on('connect', (err) =>{
+client.on('connect', (err) => {
     if (err) console.log(err); // do something with error
-    //console.log("Connected to redis");
 })
 
-client.on('error', (err) => console.log('Redis Client Error', err));
+// method to get current value in redis DB
+const getCount = async () => {
+    try {
+        await client.connect();
 
-(async () => await client.connect())();
+        const count = await client.get('count');
 
-const getCount = () => {
-    return client.get('count');
+        await client.disconnect();
+
+        return count;
+    } catch (err) {
+        console.log(err);
+    }
 }
 
-const incrementCount = (value) => {
-    return client.incrBy('count', value);
+// method to increment 'count' key in redis DB
+const incrementCount = async (value) => {
+    try {
+        await client.connect();
+
+        await client.incrBy('count', value);
+
+        await client.disconnect();
+
+    } catch (err) {
+        console.log(err);
+    }
 }
 
-const flushAll = () => {
-    return client.flushAll();
+// method to remove all keys in redis
+const flushAll = async () => {
+    try {
+        await client.connect();
+
+        await client.flushAll();
+
+        await client.disconnect();
+
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 export default {

@@ -1,7 +1,7 @@
 import fileLogger from '../services/FileLoggerService.js'
-import redis from'../services/RedisService.js'
+import redis from '../services/RedisService.js'
 
-const trackBody = async (req, res) => {
+const trackBody = (req, res) => {
 
     const data = req.body;
     const hasCount = data.hasOwnProperty('count')
@@ -9,16 +9,17 @@ const trackBody = async (req, res) => {
     fileLogger.logRequestData(data);
 
     if (hasCount) {
-        await redis.incrementCount(data.count);
+        redis.incrementCount(data.count);
     }
 
     res.sendStatus(200)
 }
 
 const getCount = async (req, res) => {
-    const count  = await redis.getCount();
+    // TODO: why here need to be await again if it is called in redis service??? no idea :-(
+    const redisCount = await redis.getCount();
 
-    res.send(JSON.stringify(count));
+    res.json({count: redisCount});
 }
 
 export default {

@@ -2,7 +2,7 @@ import fileLogger from '../services/FileLoggerService'
 import config from '../config/app'
 import fs from 'fs'
 
-import {dataWithoutCount, dataWithCount} from './test.data'
+import {dataWithoutCount, dataWithCount} from './test.data.js'
 
 beforeEach(() => {
     if (fs.existsSync(config.logFilePath)) {
